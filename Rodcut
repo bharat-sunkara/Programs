@@ -1,0 +1,86 @@
+
+//http://www.geeksforgeeks.org/dynamic-programming-set-13-cutting-a-rod/
+
+public class Rodcut {
+
+	public static void main(String[] args) 
+	{
+		int[] p = {0,1,5,8,9,10,17,17,20,24,30};
+		int n = 4;
+		
+		System.out.println("Recursive rod cut max revenue: "+recursive_rod_cut(p, n));
+		System.out.println("Memoized rod cut max revenue: "+memoized_rod_cut(p, n));
+		System.out.println("Bottom-up rod cut max revenue: "+bottomup_rod_cut(p, n));
+	}
+
+	// Bottom-up rod cut
+	private static int bottomup_rod_cut(int[] p, int n) 
+	{
+		int q = 0;
+		
+		int[] r = new int[n + 1];
+		r[0] = 0;
+		
+		for(int j = 1; j <= n; j++)
+		{
+			q = Integer.MIN_VALUE;
+			for(int i = 1; i <= j; i++)
+			{
+				q = Math.max(q, (p[i] + r[j - i]));
+			}
+			r[j] = q;
+		}		
+		return q;
+	}
+
+	// Memoized rod cut
+	private static int memoized_rod_cut(int[] p, int n) 
+	{
+		int[] r = new int[n + 1];
+		for(int i = 0; i <= n; i++)
+			r[i] = Integer.MIN_VALUE;
+		
+		return memoized_rod_cut_aux(p, n, r);
+	}
+
+	private static int memoized_rod_cut_aux(int[] p, int n, int[] r) 
+	{
+		int q;
+		if (r[n] >= 0)
+			return r[n];
+
+		if (n == 0)
+			q = 0;
+		else
+		{
+			q = Integer.MIN_VALUE;
+			for(int i = 1; i <= n; i++)
+			{
+				q = Math.max(q, (p[i] + memoized_rod_cut_aux(p, n - i, r)));
+			}
+		}
+			
+		r[n] = q;	
+		return q;
+	}
+
+	// Recursive rod cut
+	private static int recursive_rod_cut(int[] p, int n) 
+	{
+		if (n >= p.length)
+			return 0;
+			
+		if (n == 0)
+			return 0;
+		
+		int q = Integer.MIN_VALUE;
+		for(int i = 1; i <= n; i++)
+		{
+			q = Math.max(q, (p[i] + recursive_rod_cut(p, n - i)));
+		}
+		
+		return q;
+	}
+}
+
+

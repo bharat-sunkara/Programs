@@ -1,0 +1,65 @@
+package my_package;
+
+public class RadixSort {
+	private static int cnt = 0;
+	
+	public static void main(String[] args)
+	{
+        int arr[] = {329,457,657,839,436,720,355};
+
+        /** Call method sort **/
+        sort(arr);		
+	}
+
+	public static void sort( int[] arr )
+    {
+		int N = arr.length;
+		int index;
+		
+        if (N == 0)
+            return;
+        
+		cnt += 1;
+        String str = Integer.toString(arr[0]);
+		
+		if (cnt > str.length())
+		{
+			for(int i = 0; i < N; i++)
+				System.out.print(arr[i]+" ");
+			
+			return;
+		}
+                
+        int[] res = new int[N];        
+ 
+        int[] count = new int[10];
+        
+        for (int i = 0; i < N; i++)
+        {        	
+        	if (cnt == str.length())
+        		index = (int) ((arr[i]/Math.pow(10, cnt - 1)));
+        	else
+        		index = (int) ((arr[i]/Math.pow(10, cnt - 1))%10);
+        	
+        	count[index] = count[index] + 1;
+        }
+        
+        index = 0;
+        
+        for (int i = 1; i <= 9; i++)
+            count[i] += count[i - 1];
+
+        for (int j = N - 1; j >= 0; j--)
+        {
+        	if (cnt == str.length())
+        		index = (int) ((arr[j]/Math.pow(10, cnt - 1)));
+        	else
+        		index = (int) ((arr[j]/Math.pow(10, cnt - 1))%10);
+        	
+        	res[count[index] - 1] = arr[j];
+        	count[index] = count[index] - 1;
+        }  
+        
+        sort(res);
+    }  
+}

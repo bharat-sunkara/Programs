@@ -1,0 +1,63 @@
+package my_package;
+
+public class MergeSort 
+{
+	private static int N;
+	public static void main(String[] args) 
+	{
+		int[] arr = {16,4,10,14,7,9,3,2,8,1};
+		int n = 10;
+		
+		sort(arr);
+		
+		System.out.println("Sorted array using mergesort:");
+		for(int i = 0; i < n; i++)
+			System.out.print(arr[i]+" ");
+	}
+
+	private static void sort(int[] arr) 
+	{
+		heapify(arr);
+		for(int i = N; i > 0; i--)
+		{
+			swap(arr, 0, i);
+			N = N - 1;
+			maxheapify(arr, 0);
+		}
+	}
+
+	private static void heapify(int[] arr) 
+	{
+		N = arr.length - 1;
+		
+		for(int i = N/2; i > 0; i--)
+			maxheapify(arr, i);
+	}
+
+	private static void maxheapify(int[] arr, int i) 
+	{
+		int left = 2*i + 1;
+		int right = 2*i + 2;
+		int max = i;
+		
+		if (left <= N && arr[left] > arr[i])
+			max = left;
+		
+		if (right <= N && arr[right] > arr[max])
+			max = right;
+		
+		if (max != i)
+		{
+			swap(arr, i, max);
+			maxheapify(arr, max);
+		}
+		
+	}
+
+	private static void swap(int[] arr, int i, int j) 
+	{
+		int temp = arr[i];
+		arr[i] = arr[j];
+		arr[j] = temp;		
+	}
+}
